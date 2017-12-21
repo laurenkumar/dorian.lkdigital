@@ -1,0 +1,166 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="./jquery-ui/jquery-ui.min.css">
+<script src="./jquery-ui/jquery-ui.min.js"></script>
+<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+<link rel="stylesheet" href="fontawesome-stars.css">
+<script src="./jquery.barrating.js"></script>
+<script src="jquery.masonry.js"></script>
+<div class="display_flex3">
+
+	<div class="flex2">
+		<div class="">
+			<section id="me">
+		        <div class="container">
+		          <div class="row">
+		            <div class="eight columns offset-by-two columns">
+		              <p class="intro slate">My Expertise</p>
+		              <p class="statement gunmetal">I've got chops in all phases of the design process.</p>
+		            </div>
+		          </div>
+		          <div class="row2">
+		            <div class="one-third column">
+		              <div class="expertise-block"><i class="fa fa-diamond yellow"></i>
+		                <h4 class="title slate">Ideas</h4>
+		                <p class="summary">I collaborate with clients and peers to nurture and transform ideas into well thought out design specs. After all, that's where the majority of amazing user experiences start.</p>
+		              </div>
+		            </div>
+		            <div class="one-third column">
+		              <div class="expertise-block"><i class="fa fa-magic yellow"></i>
+		                <h4 class="title slate">UX/UI</h4>
+		                <p class="summary">I sketch and wireframe interfaces focusing on content structure, intuitive UI patterns and simple interactions. I'm a minimalist who truly believes that less is more.</p>
+		              </div>
+		            </div>
+		            <div class="one-third column">
+		              <div class="expertise-block"><i class="fa fa-code yellow"></i>
+		                <h4 class="title slate">Code</h4>
+		                <p class="summary">I design in the browser with HTML(5), CSS(3) and a touch of JavaScript. I love coding things from scratch, but I can work with front-end frameworks like Bootstrap too.</p>
+		              </div>
+		            </div>
+		          </div>
+		        </div>
+		    </section>
+		    <div id="work">
+		    	<div class="eight columns offset-by-two columns">
+		              <p class="intro slate">My Work</p>
+		        </div>
+		        {% for f in formation %}
+				<div class="section animate">
+				   <div class="middle">
+				      <img src="uploads/{{f.screenshot}}" />
+				   </div>
+				   <div class="left title">
+				      <div class="content">
+				         <h2>{{f.titre}}</h2>
+				         <p>{{f.description}}</p>
+				         <a href="http://{{f.lien}}" class="btn-primary">Learn more</a>
+				      </div>
+				   </div>
+				   <div class="right tiles">
+				      <img src="uploads/{{f.screenshot}}" />
+				      <img src="uploads/{{f.screenshot}}" />
+				      <img src="uploads/{{f.screenshot}}" />
+				      <img src="uploads/{{f.screenshot}}" />
+				   </div>
+				</div>
+				{% endfor %}
+		    </div>
+		    <div id="projects">
+		    	<div class="eight columns offset-by-two columns">
+		              <p class="intro slate">My Projects</p>
+		        </div>
+
+				<div id="flex_image">
+					{% for e in experiences %}
+				  <a class="layout_a" href="http://{{e.lien}}">
+				    <figure>
+				      <img src="uploads/{{e.screenshot}}" alt="">
+				      <div class="middle_inside">
+				      	<h2>{{e.titre}}</h2>
+					    <div class="text_inside"><p>{{e.description}}</p></div>
+					  </div>
+				    </figure>
+				  </a>
+				  {% endfor %} 
+				</div>
+		    </div>
+		</div>
+		<div class="">
+		</div>
+	</div>
+
+	</div>
+	<script>
+       $(function() {
+        var $container = $('#container_image');
+  
+	    $container.imagesLoaded( function(){
+	      $container.masonry({
+	        itemSelector : '.masonryImage'
+	      });
+	    });
+
+	    
+
+
+       });
+       $(document).ready(function(){
+
+	   var $sm = 480;
+	   var $md = 768;
+
+	   function resizeThis() {
+	      $imgH = $('.middle img').width();
+	      if ($(window).width() >= $sm) {
+	         $('.left,.right,.section').css('height', $imgH);
+	      } else {
+	         $('.left,.right,.section').css('height', 'auto');
+	      }
+	   }
+
+	   resizeThis();
+
+	   $(window).resize(function(){
+	      resizeThis();
+	   });
+
+	   $(window).scroll(function() {
+	      $('.section').each(function(){
+	         var $elementPos = $(this).offset().top;
+	         var $scrollPos = $(window).scrollTop();
+
+	         var $sectionH = $(this).height();
+	         var $h = $(window).height();
+	         var $sectionVert = (($h/2)-($sectionH/4));
+
+
+	         if (($elementPos - $sectionVert) <= $scrollPos && ($elementPos - $sectionVert) + $sectionH > $scrollPos) {
+	            $(this).addClass('animate');
+	         } else {
+	            $(this).removeClass('animate');
+	         }
+	      });
+	   });
+
+	   $('.btn-primary').click(function(){
+	      alert('I lied');
+	   });
+	});
+
+	$(function() {
+	  $('a[href*="#"]:not([href="#"])').click(function() {
+	    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+	      var target = $(this.hash);
+	      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+	      if (target.length) {
+	        $('html, body').animate({
+	          scrollTop: target.offset().top
+	        }, 1000);
+	        return false;
+	      }
+	    }
+	  });
+	});
+    </script>
+	{% endblock %}

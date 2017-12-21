@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        {% for a in admins %}
+        <title>LK Portfolio {{a.name}}</title>
+        {% endfor %}
+        <meta charset="UTF-8"/>
+        <meta name="description" content="lktravels blog de voyage par deux developpeurs, Dorian Laurenceau Sopika Uthayakumar, travels site for blogging done by two developpers" />
+        <meta name="keywords" content="travels, voyages, voyage, travel, Dorian, Laurenceau, Sopika, Uthayakumar, blog, world, tourism, developpeur, developper, map, cms" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <link rel="manifest" href="/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        <script src="/modernizr.min.js"></script>
+        <script src="/jquery.min.js"></script>
+        <script src="/materialize.min.js"></script>
+        <script src="./jspdf.min.js"></script>
+        <script src="./jscolor.min.js"></script>
+        <link href="/style.css" rel="stylesheet">
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110675121-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-110675121-1');
+        </script>
+    </head>
+    <body>
+
+        <div class="w3-teal">
+          <div class="w3-container">
+            <nav class="">
+              <div class="nav-mobile"><a id="nav-toggle" href="#"><span></span></a></div>
+              <ul class="nav-list">
+                {% for a in admins %}
+                <li>
+                  <a href="/" class="change_color"><img class="logo" src="uploads/{{a.logo}}"></a>
+                </li>
+                {% endfor %}
+                {% if user %}
+                <li>
+                  <a class="change_color" href="/admin">ADMINISTRATION</a>
+                </li>
+                <li>
+                  <a class="change_color" href="/users/logout">LOGOUT</a>
+                </li>
+                {% endif %}
+                <li>
+                  <a href="/" class="change_color">ACCUEIL</a>
+                </li>
+                <li>
+                  <a href="#me" class="change_color">ME</a>
+                </li>
+                <li>
+                  <a href="#work" class="change_color">MY WORK</a>
+                </li>
+                <li>
+                  <a href="#projects" class="change_color">MY PROJECTS</a>
+                </li>
+                {% if not user %}
+                <li>
+                  <a href="/users/login" class="change_color">LOGIN</a>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <div class="text_center">
+          {% for a in admins %}
+          <div class="container">
+            <img id="img_presentation" src="uploads/{{a.background}}">
+            <a href="/" class="centered2 logocontain"><img src="uploads/{{a.logo}}" id="height_logo"></a>
+            <a href="/" class="centered"><h6>HI I'm {{a.name}}</h5><h6>{{a.titre}}</h6></a>
+            <div class='console-container centered2'><span id='text'></span></div>
+            <div id="getLine" class="hidden">{{a.accroche}}</div>
+          </div>
+          {% endfor %}
+        </div>
+        <div id="main" class="container">
+            {% block content %}{% endblock %}
+        </div>
+        <footer>
+          <div class="footer-social-icons">
+            <h4 class="_14">Follow Me On</h4>
+            <ul class="social-icons">
+                <li><a href="http://facebook.com/dorian.laurenceau" class="social-icon"> <i class="fa fa-facebook"></i></a></li>
+                <li><a href="http://instagram.com/lauren_dodo8/" class="social-icon"> <i class="fa fa-instagram"></i></a></li>
+                <li><a href="http://linkedin.com/in/laurenceau/" class="social-icon"> <i class="fa fa-linkedin"></i></a></li>
+            </ul>
+        </div>
+          <div class="text_center display_flex">
+               © 2017 LK PORFOLIO
+          </div>
+        </footer>
+        <script>
+          $(function() {
+            $("nav li a").click(function() {
+              $("nav li a").removeClass("current");
+              $(this).addClass("current");
+            });
+
+          });
+
+
+          $( document ).ready(function() {      
+              //var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+
+             /* if (!isMobile.matches) {
+                document.getElementById("mySidebar").style.width = "20%";
+              }*/
+
+              var line = $("#getLine").text();
+
+              
+              $(function(){
+
+                $.fn.shuffleLetters = function(prop){
+
+                  var options = $.extend({
+                      "step"  : 4,    // How many times should the letters be changed
+                      "fps"   : 25,   // Frames Per Second
+                      "text"  : ""    // Use this text instead of the contents
+                  },prop)
+
+                  return this.each(function(){
+
+                      var el = $(this),
+                          str = "";
+
+                      if(options.text) {
+                          str = options.text.split('');
+                      }
+                      else {
+                          str = el.text().split('');
+                      }
+
+                      // The types array holds the type for each character;
+                      // Letters holds the positions of non-space characters;
+
+                      var types = [],
+                          letters = [];
+
+                      // Looping through all the chars of the string
+
+                      for(var i=0;i<str.length;i++){
+
+                          var ch = str[i];
+
+                          if(ch == " "){
+                              types[i] = "space";
+                              continue;
+                          }
+                          else if(/[a-z]/.test(ch)){
+                              types[i] = "lowerLetter";
+                          }
+                          else if(/[A-Z]/.test(ch)){
+                              types[i] = "upperLetter";
+                          }
+                          else {
+                              types[i] = "symbol";
+                          }
+
+                          letters.push(i);
+                      }
+
+                      el.html("");            
+
+                      // Self executing named function expression:
+
+                      (function shuffle(start){
+
+                          // This code is run options.fps times per second
+                          // and updates the contents of the page element
+
+                          var i,
+                              len = letters.length,
+                              strCopy = str.slice(0); // Fresh copy of the string
+
+                          if(start>len){
+                              return;
+                          }
+
+                          // All the work gets done here
+                          for(i=Math.max(start,0); i < len; i++){
+
+                              // The start argument and options.step limit
+                              // the characters we will be working on at once
+
+                              if( i < start+options.step){
+                                  // Generate a random character at this position
+                                  strCopy[letters[i]] = randomChar(types[letters[i]]);
+                              }
+                              else {
+                                  strCopy[letters[i]] = "";
+                              }
+                          }
+
+                          el.text(strCopy.join(""));
+
+                          setTimeout(function(){
+
+                              shuffle(start+1);
+
+                          },1000/options.fps);
+
+                      })(-options.step);
+
+                  });
+            };
+
+            function randomChar(type){
+                var pool = "";
+
+                if (type == "lowerLetter"){
+                    pool = "abcdefghijklmnopqrstuvwxyz0123456789";
+                }
+                else if (type == "upperLetter"){
+                    pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                }
+                else if (type == "symbol"){
+                    pool = ",.?/\\(^)![]{}*&^%$#'\"";
+                }
+
+                var arr = pool.split('');
+                return arr[Math.floor(Math.random()*arr.length)];
+            }
+                // container is the DOM element;
+                // userText is the textbox
+
+                var container = $("#text")
+
+                // Shuffle the contents of container
+                container.shuffleLetters();
+
+                // Bind events
+
+                setTimeout(function(){
+
+                    // Shuffle the container with custom text
+                    container.shuffleLetters({
+                        "text": line
+                    });
+
+
+                },1000);
+
+            });
+           });
+
+          (function($) { // Begin jQuery
+            $(function() { // DOM ready
+              // If a link has a dropdown, add sub menu toggle.
+              $('nav ul li a:not(:only-child)').click(function(e) {
+                $(this).siblings('.nav-dropdown').toggle();
+                // Close one dropdown when selecting another
+                $('.nav-dropdown').not($(this).siblings()).hide();
+                e.stopPropagation();
+              });
+              // Clicking away from dropdown will remove the dropdown class
+              $('html').click(function() {
+                $('.nav-dropdown').hide();
+              });
+              // Toggle open and close nav styles on click
+              $('#nav-toggle').click(function() {
+                $('nav ul').slideToggle();
+              });
+              // Hamburger to X toggle
+              $('#nav-toggle').on('click', function() {
+                this.classList.toggle('active');
+              });
+            }); // end DOM ready
+          })(jQuery); // end jQuery
+
+          
+        </script>
+    </body>
+</html>
